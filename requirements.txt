@@ -1,0 +1,4 @@
+mongoengine
+Flask
+gunicorn
+Flask-RESTful
