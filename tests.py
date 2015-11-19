@@ -4,6 +4,7 @@ from mongoengine import connect
 from storage import (
     MONGODB_URL,
     MONGODB_DATABASE,
+    Business,
 )
 from app import app
 
@@ -105,6 +106,13 @@ class BusinessTest(unittest.TestCase):
         self.assertEqual(item['name'], 'test')
         self.assertEqual(item['rating'], None)
         self.assertEqual(item['reviews'], [])
+
+    def test_delete_business_item_by_id(self):
+        item = self.test_create_business_item()
+        self.assertEqual(Business.objects.count(), 1)
+        result = self.app.delete('/business/{}'.format(item['_id']))
+        self.assertEqual(result.status_code, 204)
+        self.assertEqual(Business.objects.count(), 0)
 
     def test_update_business_item_by_id(self):
         item = self.test_create_business_item()

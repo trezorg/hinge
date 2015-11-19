@@ -50,8 +50,8 @@ class BusinessResource(Resource):
         return get_record_by_id(_id)
 
     def delete(self, _id):
-        record = get_record_by_id(_id)
-        record.delete()
+        get_record_by_id(_id)
+        Business.objects(_id=_id).delete()
         return '', 204
 
     @marshal_with(BUSINESS_FIELDS)
