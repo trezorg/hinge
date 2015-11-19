@@ -5,11 +5,10 @@ from mongoengine import (
     Document,
     EmbeddedDocument,
     EmbeddedDocumentField,
-    StringField,
     DateTimeField,
-    LineStringField,
+    StringField,
     ListField,
-    GeoPointField,
+    PointField,
     IntField,
     FloatField,
     SequenceField,
@@ -26,16 +25,16 @@ class Review(EmbeddedDocument):
     text = StringField(required=True)
     created = DateTimeField(default=datetime.now)
     rating = IntField(required=True, min_value=1, max_value=5)
-    tags = LineStringField(required=True)
+    tags = ListField(StringField, required=True)
 
 
 class Business(Document):
-    id = SequenceField(required=True)
+    _id = SequenceField(required=True)
     name = StringField(max_length=200, required=True)
     created = DateTimeField(default=datetime.now)
-    tags = LineStringField(required=True)
-    rating = FloatField(required=True, min_value=1, max_value=5)
-    location = GeoPointField(required=True)
-    reviews = ListField(EmbeddedDocumentField(Review))
+    tags = ListField(StringField, default=list)
+    rating = FloatField(min_value=1, max_value=5, default=None)
+    location = PointField(required=True)
+    reviews = ListField(EmbeddedDocumentField(Review), default=list)
 
 
