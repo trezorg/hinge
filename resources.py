@@ -23,6 +23,7 @@ REVIEW_FIELDS = {
     'text': fields.String,
     'tags': fields.List(fields.String),
     'rating': fields.Integer,
+    'created': fields.DateTime,
 }
 
 BUSINESS_FIELDS = {
