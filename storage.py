@@ -25,14 +25,14 @@ class Review(EmbeddedDocument):
     text = StringField(required=True)
     created = DateTimeField(default=datetime.now)
     rating = IntField(required=True, min_value=1, max_value=5)
-    tags = ListField(StringField, required=True)
+    tags = ListField(StringField(), required=True)
 
 
 class Business(Document):
     _id = SequenceField(required=True)
     name = StringField(max_length=200, required=True)
     created = DateTimeField(default=datetime.now)
-    tags = ListField(StringField, default=list)
+    tags = ListField(StringField(), default=list)
     rating = FloatField(min_value=1, max_value=5, default=None)
     location = PointField(required=True)
     reviews = ListField(EmbeddedDocumentField(Review), default=list)

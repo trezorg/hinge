@@ -5,22 +5,33 @@ from flask_restful import (
     fields,
     marshal_with,
 )
-from storage import Business
+from storage import (
+    Business,
+    Review,
+)
 
 
 parser = reqparse.RequestParser()
 parser.add_argument('name', type=str)
+parser.add_argument('text', type=str)
+parser.add_argument('rating', type=int)
+parser.add_argument('tags', location='json', type=list)
 parser.add_argument('location', type=dict)
 parser.add_argument('distance', type=int)
 
+REVIEW_FIELDS = {
+    'text': fields.String,
+    'tags': fields.List(fields.String),
+    'rating': fields.Integer,
+}
 
 BUSINESS_FIELDS = {
     '_id': fields.Integer,
     'name': fields.String,
-    'tags': fields.Raw,
+    'tags': fields.List(fields.String),
     'rating': fields.Float,
     'location': fields.Raw,
-    'reviews': fields.Raw,
+    'reviews': fields.List(fields.Nested(REVIEW_FIELDS)),
     'created': fields.DateTime
 }
 
@@ -93,5 +104,31 @@ class BusinessListResource(Resource):
             "type": "Point",
             "coordinates": [lon, lat]
         }
+        record.save()
+        return record, 201
+
+
+class BusinessReviewResource(Resource):
+
+    @marshal_with(BUSINESS_FIELDS)
+    def post(self, _id):
+        record = get_record_by_id(_id)
+        args = parser.parse_args()
+        text = args.get('text')
+        rating = args.get('rating')
+        tags = args.get('tags')
+        reviews_count = len(record.reviews)
+        new_rating = round(
+            ((record.rating or 0) * reviews_count + rating) /
+            (reviews_count + 1),
+            2
+        )
+        review = Review()
+        review.text = text
+        review.tags = tags
+        review.rating = rating
+        record.reviews.append(review)
+        record.rating = new_rating
+        record.tags = list(set(record.tags + tags))
         record.save()
         return record, 201
