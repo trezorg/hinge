@@ -14,6 +14,12 @@ Install by cloning from the GitHub repo:
     $ python app.py
 
 
+Testing
+--------
+
+    $ MONGODB_DATABASE=hingetest nosetests
+
+
 Create business item
 ----------------------
 

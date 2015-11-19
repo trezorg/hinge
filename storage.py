@@ -15,8 +15,9 @@ from mongoengine import (
 )
 
 MONGODB_URL = os.environ.get('MONGODB_URL')
+MONGODB_DATABASE = os.environ.get('MONGODB_DATABASE') or 'hinge'
 if not MONGODB_URL:
-    MONGODB_URL = "mongodb://localhost:27017/hinge"
+    MONGODB_URL = "mongodb://localhost:27017/{}".format(MONGODB_DATABASE)
 
 connect(host=MONGODB_URL)
 

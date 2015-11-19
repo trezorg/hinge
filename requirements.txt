@@ -2,3 +2,4 @@ mongoengine
 Flask
 gunicorn
 Flask-RESTful
+nose
