@@ -35,6 +35,7 @@ BUSINESS_FIELDS = {
     'reviews': fields.List(fields.Nested(REVIEW_FIELDS)),
     'created': fields.DateTime
 }
+METERS_PER_MILE = 1609.34
 
 
 def get_record_by_id(_id):
@@ -85,7 +86,7 @@ class BusinessListResource(Resource):
         if distance is not None and location is not None:
             filter_kwargs = {
                 'location__near': [location['lon'], location['lat']],
-                'location__max_distance': distance * 1609.34
+                'location__max_distance': distance * METERS_PER_MILE
             }
         records = Business.objects(**filter_kwargs)
         return list(records)
