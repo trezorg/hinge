@@ -1,4 +1,5 @@
 import os
+import urlparse
 from datetime import datetime
 from mongoengine import (
     connect,
@@ -15,9 +16,13 @@ from mongoengine import (
 )
 
 MONGODB_URL = os.environ.get('MONGODB_URL')
-MONGODB_DATABASE = os.environ.get('MONGODB_DATABASE') or 'hinge'
+MONGODB_DATABASE = os.environ.get('MONGODB_DATABASE')
+MONGODB_DATABASE_DEFAULT = 'hinge'
 if not MONGODB_URL:
-    MONGODB_URL = "mongodb://localhost:27017/{}".format(MONGODB_DATABASE)
+    MONGODB_URL = "mongodb://localhost:27017/{}".format(
+        MONGODB_DATABASE or MONGODB_DATABASE_DEFAULT)
+elif not MONGODB_DATABASE:
+    MONGODB_DATABASE = urlparse.urlparse(MONGODB_URL).path.strip('/')
 
 connect(host=MONGODB_URL)
 

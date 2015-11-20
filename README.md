@@ -19,6 +19,10 @@ Testing
 
     $ MONGODB_DATABASE=hingetest nosetests
 
+    or
+
+    $ MONGODB_URL='mongodb://localhost:27017/hingetest' nosetests
+
 
 Create business item
 ----------------------
