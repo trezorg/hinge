@@ -1,7 +1,7 @@
 hinge-api-interview-ironwood
 =============================
 
-Test task
+Test task for hinge vacancy
 
 Install
 -------
@@ -10,6 +10,8 @@ Install by cloning from the GitHub repo:
 
     $ git clone git://github.com/trezorg/hinge.git
     $ cd hinge
+    $ virtualenv venv
+    $ source venv/bin/activate
     $ pip install -r requirements.txt
     $ python app.py
 
@@ -49,8 +51,7 @@ Update business item
 Get business items
 ----------------------
 
-    curl -X GET -H "Content-Type: application/json" \
-        http://127.0.0.1:5000/business
+    curl -X GET http://127.0.0.1:5000/business
 
 
 Search business items by point distance

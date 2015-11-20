@@ -131,6 +131,6 @@ class BusinessReviewResource(Resource):
         review.rating = rating
         record.reviews.append(review)
         record.rating = new_rating
-        record.tags = list(set(record.tags + tags))
+        record.tags = sorted(set(record.tags + tags))
         record.save()
         return record, 201
